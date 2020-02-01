@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_incidents">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_incidents"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.incidents.IncidentsFragment"
+        android:label="@string/menu_incidents"
+        tools:layout="@layout/fragment_incidents" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_roadworks"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.RoadworksFragment"
+        android:label="@string/menu_roadworks"
+        tools:layout="@layout/fragment_roadworks" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_planner"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.planner.PlannerFragment"
+        android:label="@string/menu_planner"
+        tools:layout="@layout/fragment_planner" />
 </navigation>

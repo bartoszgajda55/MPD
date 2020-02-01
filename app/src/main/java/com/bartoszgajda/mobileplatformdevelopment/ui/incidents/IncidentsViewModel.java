@@ -1,16 +1,16 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.gallery;
+package com.bartoszgajda.mobileplatformdevelopment.ui.incidents;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class IncidentsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public IncidentsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is Incidents fragment");
     }
 
     public LiveData<String> getText() {

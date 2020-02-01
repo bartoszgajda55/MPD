@@ -1,16 +1,16 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.slideshow;
+package com.bartoszgajda.mobileplatformdevelopment.ui.planner;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class PlannerViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public PlannerViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is Planner fragment");
     }
 
     public LiveData<String> getText() {

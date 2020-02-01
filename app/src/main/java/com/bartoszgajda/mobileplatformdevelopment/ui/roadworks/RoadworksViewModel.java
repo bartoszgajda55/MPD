@@ -1,16 +1,16 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.home;
+package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class RoadworksViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public RoadworksViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is Roadworks fragment");
     }
 
     public LiveData<String> getText() {
