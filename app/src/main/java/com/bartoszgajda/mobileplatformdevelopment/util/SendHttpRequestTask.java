@@ -1,47 +1,72 @@
 package com.bartoszgajda.mobileplatformdevelopment.util;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 public class SendHttpRequestTask extends AsyncTask<String, Void, String> {
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+  private String url;
 
-    @Override
-    protected String doInBackground(String... urls) {
-        try {
-            URL url = new URL(urls[0]);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            // TODO https://www.codexpedia.com/android/asynctask-and-httpurlconnection-sample-in-android/
-            int responseCode = connection.getResponseCode();
+  public SendHttpRequestTask(String url) {
+    this.url = url;
+  }
 
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Convert request content to string
-                InputStream is = connection.getInputStream();
-                String content = convertInputStream(is, "UTF-8");
-                is.close();
-                return content;
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  @Override
+  protected String doInBackground(String... urls) {
+    HttpURLConnection connection = null;
+    BufferedReader reader = null;
+    String xmlString = null;
+    try {
+      URL url = new URL(this.url);
+      connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestMethod("GET");
+      connection.connect();
+
+      InputStream inputStream = connection.getInputStream();
+      StringBuffer buffer = new StringBuffer();
+
+      if (inputStream == null) {
         return null;
-    }
+      }
+      reader = new BufferedReader(new InputStreamReader(inputStream));
 
-    private String convertInputStream(InputStream is, String encoding) {
-        Scanner scanner = new Scanner(is, encoding).useDelimiter("\\A");
-        return scanner.hasNext() ? scanner.next() : "";
+      String line;
+      while((line = reader.readLine()) != null) {
+        buffer.append(line + "\n");
+      }
+
+      if(buffer.length() == 0) {
+        return null;
+      }
+
+      xmlString = buffer.toString();
+      return xmlString;
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (final IOException e) {
+          Log.e("api", "Error closing stream", e);
+        }
+      }
     }
+    return null;
+  }
+
+  @Override
+  protected void onPostExecute(String s) {
+    super.onPostExecute(s);
+    Log.i("api", s);
+  }
 }
