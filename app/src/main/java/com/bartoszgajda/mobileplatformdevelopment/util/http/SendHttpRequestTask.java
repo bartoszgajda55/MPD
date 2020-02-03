@@ -1,4 +1,4 @@
-package com.bartoszgajda.mobileplatformdevelopment.util;
+package com.bartoszgajda.mobileplatformdevelopment.util.http;
 
 import android.os.AsyncTask;
 import android.util.Log;

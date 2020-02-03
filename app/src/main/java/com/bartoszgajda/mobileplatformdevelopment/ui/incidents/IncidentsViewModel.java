@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.bartoszgajda.mobileplatformdevelopment.util.AsyncResponse;
-import com.bartoszgajda.mobileplatformdevelopment.util.SendHttpRequestTask;
+import com.bartoszgajda.mobileplatformdevelopment.util.http.AsyncResponse;
+import com.bartoszgajda.mobileplatformdevelopment.util.http.SendHttpRequestTask;
 
 public class IncidentsViewModel extends ViewModel {
 
