@@ -10,15 +10,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SendHttpRequestTask extends AsyncTask<String, Void, String> {
+public class SendHttpRequestTask extends AsyncTask<String, Void, Object> {
+  public AsyncResponse response = null;
   private String url;
 
-  public SendHttpRequestTask(String url) {
+  public SendHttpRequestTask(String url, AsyncResponse asyncResponse) {
     this.url = url;
+    this.response = asyncResponse;
   }
 
   @Override
-  protected String doInBackground(String... urls) {
+  protected Object doInBackground(String... urls) {
     HttpURLConnection connection = null;
     BufferedReader reader = null;
     String xmlString = null;
@@ -65,8 +67,8 @@ public class SendHttpRequestTask extends AsyncTask<String, Void, String> {
   }
 
   @Override
-  protected void onPostExecute(String s) {
-    super.onPostExecute(s);
-    Log.i("api", s);
+  protected void onPostExecute(Object object) {
+    super.onPostExecute(object);
+    response.processFinish(object);
   }
 }
