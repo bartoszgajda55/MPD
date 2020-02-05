@@ -1,11 +1,14 @@
 package com.bartoszgajda.mobileplatformdevelopment.util.model;
 
+import java.util.Date;
+import java.util.HashMap;
+
 public class Incident {
   private String title;
   private String description;
   private String link;
-  private String coordinates;
-  private String publicationDate;
+  private String[] coordinates;
+  private Date publicationDate;
 
   public Incident() {
   }
@@ -34,19 +37,19 @@ public class Incident {
     this.link = link;
   }
 
-  public String getCoordinates() {
+  public String[] getCoordinates() {
     return coordinates;
   }
 
-  public void setCoordinates(String coordinates) {
+  public void setCoordinates(String[] coordinates) {
     this.coordinates = coordinates;
   }
 
-  public String getPublicationDate() {
+  public Date getPublicationDate() {
     return publicationDate;
   }
 
-  public void setPublicationDate(String publicationDate) {
+  public void setPublicationDate(Date publicationDate) {
     this.publicationDate = publicationDate;
   }
 

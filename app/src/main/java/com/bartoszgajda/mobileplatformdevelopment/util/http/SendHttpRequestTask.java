@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SendHttpRequestTask extends AsyncTask<String, Void, ArrayList<? extends Object>> {
   private AsyncResponse response;
@@ -67,10 +68,10 @@ public class SendHttpRequestTask extends AsyncTask<String, Void, ArrayList<? ext
                 incident.setLink(text);
                 break;
               case "georss:point":
-                incident.setCoordinates(text);
+                incident.setCoordinates(text.split("\\s"));
                 break;
               case "pubDate":
-                incident.setPublicationDate(text);
+                incident.setPublicationDate(new Date(text));
                 break;
               case "item":
                 incidents.add(incident);

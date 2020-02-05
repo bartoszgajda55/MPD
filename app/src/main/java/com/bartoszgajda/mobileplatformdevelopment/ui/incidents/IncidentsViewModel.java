@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.bartoszgajda.mobileplatformdevelopment.util.http.AsyncResponse;
 import com.bartoszgajda.mobileplatformdevelopment.util.http.SendHttpRequestTask;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,8 @@ public class IncidentsViewModel extends ViewModel {
         new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/currentincidents.aspx", new AsyncResponse() {
           @Override
           public void processFinish(ArrayList<? extends Object> output) {
-            Log.d("api", output.get(0).toString());
+            ArrayList<Incident> incidents = (ArrayList<Incident>) output;
+            Log.d("api", incidents.get(0).toString());
           }
         }).execute();
     }
