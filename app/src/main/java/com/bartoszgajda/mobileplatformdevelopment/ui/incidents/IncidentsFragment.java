@@ -16,20 +16,20 @@ import com.bartoszgajda.mobileplatformdevelopment.R;
 
 public class IncidentsFragment extends Fragment {
 
-    private IncidentsViewModel incidentsViewModel;
+  private IncidentsViewModel incidentsViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        incidentsViewModel =
-                ViewModelProviders.of(this).get(IncidentsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_incidents, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        incidentsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+  public View onCreateView(@NonNull LayoutInflater inflater,
+                           ViewGroup container, Bundle savedInstanceState) {
+    incidentsViewModel =
+        ViewModelProviders.of(this).get(IncidentsViewModel.class);
+    View root = inflater.inflate(R.layout.fragment_incidents, container, false);
+    final TextView textView = root.findViewById(R.id.text_home);
+    incidentsViewModel.getText().observe(this, new Observer<String>() {
+      @Override
+      public void onChanged(@Nullable String s) {
+        textView.setText(s);
+      }
+    });
+    return root;
+  }
 }

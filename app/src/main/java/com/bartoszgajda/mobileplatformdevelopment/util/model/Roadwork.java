@@ -48,4 +48,15 @@ public class Roadwork {
   public void setPublicationDate(Date publicationDate) {
     this.publicationDate = publicationDate;
   }
+
+  @Override
+  public String toString() {
+    return "Roadwork{" +
+        "title='" + title + '\'' +
+        ", description='" + description + '\'' +
+        ", link='" + link + '\'' +
+        ", coordinates='" + coordinates + '\'' +
+        ", publicationDate='" + publicationDate + '\'' +
+        '}';
+  }
 }

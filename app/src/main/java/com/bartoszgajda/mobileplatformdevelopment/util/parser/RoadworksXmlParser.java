@@ -1,6 +1,6 @@
 package com.bartoszgajda.mobileplatformdevelopment.util.parser;
 
-import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class IncidentsXmlParser extends XmlParser {
+public class RoadworksXmlParser extends XmlParser {
   @Override
-  public ArrayList<Incident> parseXmlToIncidentsArrayList(InputStream inputStream) {
+  public ArrayList<Roadwork> parseXmlToIncidentsArrayList(InputStream inputStream) {
     try {
       XmlPullParserFactory parserFactory = XmlPullParserFactory.newInstance();
       XmlPullParser parser = parserFactory.newPullParser();
@@ -19,8 +19,8 @@ public class IncidentsXmlParser extends XmlParser {
       parser.setInput(inputStream, null);
 
       String tag, text = "";
-      ArrayList<Incident> incidents = new ArrayList<>();
-      Incident incident = new Incident();
+      ArrayList<Roadwork> roadworks = new ArrayList<>();
+      Roadwork roadwork = new Roadwork();
 
       int event = parser.getEventType();
       while (event != XmlPullParser.END_DOCUMENT) {
@@ -28,7 +28,7 @@ public class IncidentsXmlParser extends XmlParser {
         switch (event) {
           case XmlPullParser.START_TAG:
             if (tag.equals("item"))
-              incident = new Incident();
+              roadwork = new Roadwork();
             break;
           case XmlPullParser.TEXT:
             text = parser.getText();
@@ -36,22 +36,22 @@ public class IncidentsXmlParser extends XmlParser {
           case XmlPullParser.END_TAG:
             switch (tag) {
               case "title":
-                incident.setTitle(text);
+                roadwork.setTitle(text);
                 break;
               case "description":
-                incident.setDescription(text);
+                roadwork.setDescription(text);
                 break;
               case "link":
-                incident.setLink(text);
+                roadwork.setLink(text);
                 break;
               case "georss:point":
-                incident.setCoordinates(text.split("\\s"));
+                roadwork.setCoordinates(text.split("\\s"));
                 break;
               case "pubDate":
-                incident.setPublicationDate(new Date(text));
+                roadwork.setPublicationDate(new Date(text));
                 break;
               case "item":
-                incidents.add(incident);
+                roadworks.add(roadwork);
                 break;
             }
             break;
@@ -62,7 +62,7 @@ public class IncidentsXmlParser extends XmlParser {
         inputStream.close();
       }
 
-      return incidents;
+      return roadworks;
     } catch (XmlPullParserException | IOException e) {
       e.printStackTrace();
     }
