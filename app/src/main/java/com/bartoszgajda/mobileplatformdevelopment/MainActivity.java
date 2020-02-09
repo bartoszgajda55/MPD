@@ -17,8 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
-    private String plannedRoadworksUrl = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-    private String currentIncidentsUrl = "https://trafficscotland.org/rss/feeds/currentincidents.aspx";
+    // TODO - change to this - https://github.com/Atr07/drawer-with-bottom-navigation-architecture
 
     private AppBarConfiguration mAppBarConfiguration;
 
