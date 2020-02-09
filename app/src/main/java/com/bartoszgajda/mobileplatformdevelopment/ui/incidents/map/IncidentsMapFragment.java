@@ -1,4 +1,4 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.incidents;
+package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
 
-public class IncidentsFragment extends Fragment {
+public class IncidentsMapFragment extends Fragment {
 
-  private IncidentsViewModel incidentsViewModel;
+  private IncidentsMapViewModel incidentsMapViewModel;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-    incidentsViewModel =
-        ViewModelProviders.of(this).get(IncidentsViewModel.class);
-    View root = inflater.inflate(R.layout.fragment_incidents, container, false);
-    final TextView textView = root.findViewById(R.id.text_incidents);
-    incidentsViewModel.getText().observe(this, new Observer<String>() {
+    incidentsMapViewModel =
+        ViewModelProviders.of(this).get(IncidentsMapViewModel.class);
+    View root = inflater.inflate(R.layout.fragment_incidents_map, container, false);
+    final TextView textView = root.findViewById(R.id.text_incidents_map);
+    incidentsMapViewModel.getText().observe(this, new Observer<String>() {
       @Override
       public void onChanged(@Nullable String s) {
         textView.setText(s);

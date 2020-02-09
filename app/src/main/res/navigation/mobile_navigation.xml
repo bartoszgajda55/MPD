@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_incidents">
+    app:startDestination="@+id/nav_incidents_list">
 
     <fragment
-        android:id="@+id/nav_incidents"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.incidents.IncidentsFragment"
-        android:label="@string/menu_incidents"
-        tools:layout="@layout/fragment_incidents" />
+        android:id="@+id/nav_incidents_list"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.incidents.list.IncidentsListFragment"
+        android:label="@string/menu_incidents_list"
+        tools:layout="@layout/fragment_incidents_list" />
+
+    <fragment
+        android:id="@+id/nav_incidents_map"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map.IncidentsMapFragment"
+        android:label="@string/menu_incidents_map"
+        tools:layout="@layout/fragment_incidents_map" />
 
     <fragment
         android:id="@+id/nav_roadworks"

@@ -1,4 +1,4 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.incidents;
+package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.list;
 
 import android.util.Log;
 
@@ -13,13 +13,13 @@ import com.bartoszgajda.mobileplatformdevelopment.util.parser.IncidentsXmlParser
 
 import java.util.ArrayList;
 
-public class IncidentsViewModel extends ViewModel {
+public class IncidentsListViewModel extends ViewModel {
 
   private MutableLiveData<String> mText;
 
-  public IncidentsViewModel() {
+  public IncidentsListViewModel() {
     mText = new MutableLiveData<>();
-    mText.setValue("This is Incidents fragment");
+    mText.setValue("This is List Incidents fragment");
     new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/currentincidents.aspx", new IncidentsXmlParser(),
         new AsyncResponse() {
           @Override
