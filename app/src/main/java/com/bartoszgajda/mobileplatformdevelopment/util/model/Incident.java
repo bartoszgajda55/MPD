@@ -1,10 +1,11 @@
 package com.bartoszgajda.mobileplatformdevelopment.util.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Incident {
-  private String title;
+  private String[] title;
   private String description;
   private String link;
   private String[] coordinates;
@@ -13,11 +14,11 @@ public class Incident {
   public Incident() {
   }
 
-  public String getTitle() {
+  public String[] getTitle() {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(String[] title) {
     this.title = title;
   }
 
@@ -56,7 +57,7 @@ public class Incident {
   @Override
   public String toString() {
     return "Incident{" +
-        "title='" + title + '\'' +
+        "title='" + Arrays.toString(title) + '\'' +
         ", description='" + description + '\'' +
         ", link='" + link + '\'' +
         ", coordinates='" + coordinates + '\'' +

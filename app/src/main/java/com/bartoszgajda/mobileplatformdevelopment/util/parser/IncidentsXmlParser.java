@@ -36,7 +36,7 @@ public class IncidentsXmlParser extends XmlParser {
           case XmlPullParser.END_TAG:
             switch (tag) {
               case "title":
-                incident.setTitle(text);
+                incident.setTitle(text.split("\\s-\\s"));
                 break;
               case "description":
                 incident.setDescription(text);

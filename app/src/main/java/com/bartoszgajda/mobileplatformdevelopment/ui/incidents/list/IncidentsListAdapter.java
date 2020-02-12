@@ -28,7 +28,7 @@ public class IncidentsListAdapter extends ArrayAdapter<Incident> {
     // Lookup view for data population
     TextView incidentName = (TextView) convertView.findViewById(R.id.incident_name);
     // Populate the data into the template view using the data object
-    incidentName.setText(incident.getTitle());
+    incidentName.setText(incident.getTitle()[0]);
     // Return the completed view to render on screen
     return convertView;
   }
