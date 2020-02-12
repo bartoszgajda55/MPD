@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class IncidentsListAdapter extends ArrayAdapter<Incident> {
@@ -19,17 +20,20 @@ public class IncidentsListAdapter extends ArrayAdapter<Incident> {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    // Get the data item for this position
     Incident incident = getItem(position);
-    // Check if an existing view is being reused, otherwise inflate the view
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext()).inflate(R.layout.incidents_list_item, parent, false);
     }
-    // Lookup view for data population
-    TextView incidentName = (TextView) convertView.findViewById(R.id.incident_name);
-    // Populate the data into the template view using the data object
-    incidentName.setText(incident.getTitle()[0]);
-    // Return the completed view to render on screen
+    TextView incidentTitle = (TextView) convertView.findViewById(R.id.incident_title);
+    TextView incidentDescription = (TextView) convertView.findViewById(R.id.incident_description);
+    TextView incidentLink = (TextView) convertView.findViewById(R.id.incident_link);
+    TextView incidentPubdate = (TextView) convertView.findViewById(R.id.incident_pubdate);
+
+    incidentTitle.setText(incident.getTitle());
+    incidentDescription.setText(incident.getDescription());
+    incidentLink.setText("More: " + incident.getLink());
+    incidentPubdate.setText("Published: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(incident.getPublicationDate()));
+
     return convertView;
   }
 }
