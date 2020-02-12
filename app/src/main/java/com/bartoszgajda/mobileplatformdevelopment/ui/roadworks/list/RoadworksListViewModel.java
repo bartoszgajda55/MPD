@@ -1,4 +1,4 @@
-package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks;
+package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
 import android.util.Log;
 
@@ -8,20 +8,18 @@ import androidx.lifecycle.ViewModel;
 
 import com.bartoszgajda.mobileplatformdevelopment.util.http.AsyncResponse;
 import com.bartoszgajda.mobileplatformdevelopment.util.http.SendHttpRequestTask;
-import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
-import com.bartoszgajda.mobileplatformdevelopment.util.parser.IncidentsXmlParser;
 import com.bartoszgajda.mobileplatformdevelopment.util.parser.RoadworksXmlParser;
 
 import java.util.ArrayList;
 
-public class RoadworksViewModel extends ViewModel {
+public class RoadworksListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public RoadworksViewModel() {
+    public RoadworksListViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Roadworks fragment");
+        mText.setValue("This is Roadworks List fragment");
         new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/roadworks.aspx", new RoadworksXmlParser(),
             new AsyncResponse() {
                 @Override

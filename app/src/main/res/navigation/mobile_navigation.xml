@@ -18,10 +18,16 @@
         tools:layout="@layout/fragment_incidents_map" />
 
     <fragment
-        android:id="@+id/nav_roadworks"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.RoadworksFragment"
-        android:label="@string/menu_roadworks"
-        tools:layout="@layout/fragment_roadworks" />
+        android:id="@+id/nav_roadworks_list"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list.RoadworksListFragment"
+        android:label="@string/menu_roadworks_list"
+        tools:layout="@layout/fragment_roadworks_list" />
+
+    <fragment
+        android:id="@+id/nav_roadworks_map"
+        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.map.RoadworksMapFragment"
+        android:label="@string/menu_roadworks_map"
+        tools:layout="@layout/fragment_roadworks_map" />
 
     <fragment
         android:id="@+id/nav_planner"

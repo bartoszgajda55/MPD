@@ -12,7 +12,8 @@
     <string name="menu_incidents_map">Incidents on Map</string>
 
     <string name="menu_roadworks_group">Roadworks</string>
-    <string name="menu_roadworks">Roadworks</string>
+    <string name="menu_roadworks_list">Roadworks List</string>
+    <string name="menu_roadworks_map">Roadworks on Map</string>
 
     <string name="menu_planner_group">Planner</string>
     <string name="menu_planner">Journey Planner</string>
