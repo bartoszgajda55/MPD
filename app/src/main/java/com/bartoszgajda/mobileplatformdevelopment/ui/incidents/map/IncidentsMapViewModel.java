@@ -12,25 +12,26 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import com.bartoszgajda.mobileplatformdevelopment.util.parser.IncidentsXmlParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class IncidentsMapViewModel extends ViewModel {
 
-  private MutableLiveData<String> mText;
+  private MutableLiveData<List<Incident>> mIncidents;
 
   public IncidentsMapViewModel() {
-    mText = new MutableLiveData<>();
-    mText.setValue("This is Map Incidents fragment");
+    mIncidents = new MutableLiveData<>();
     new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/currentincidents.aspx", new IncidentsXmlParser(),
         new AsyncResponse() {
           @Override
           public void processFinish(ArrayList<?> output) {
-            ArrayList<Incident> incidents = (ArrayList<Incident>) output;
+            List<Incident> incidents = (List<Incident>) output;
+            mIncidents.setValue(incidents);
             Log.d("api", incidents.get(0).toString());
           }
         }).execute();
   }
 
-  public LiveData<String> getText() {
-    return mText;
+  public LiveData<List<Incident>> getIncidents() {
+    return this.mIncidents;
   }
 }
