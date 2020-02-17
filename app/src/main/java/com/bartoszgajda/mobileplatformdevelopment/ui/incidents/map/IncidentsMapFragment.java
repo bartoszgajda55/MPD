@@ -1,9 +1,12 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -12,14 +15,16 @@ import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback {
+public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
   GoogleMap googleMap;
 
   private IncidentsMapViewModel incidentsMapViewModel;
@@ -49,5 +54,12 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
 
     LatLng glasgow = new LatLng(55.86515, -4.25763);
     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
+    googleMap.setOnMarkerClickListener(this);
+  }
+
+  @Override
+  public boolean onMarkerClick(Marker marker) {
+    Toast.makeText(getActivity(), "Marker Clicked", Toast.LENGTH_LONG).show();
+    return false;
   }
 }
