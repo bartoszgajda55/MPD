@@ -1,12 +1,9 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -22,10 +19,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
-  GoogleMap googleMap;
+  private HashMap<LatLng, Incident> markerIncidentHashMap = new HashMap<>();
 
   private IncidentsMapViewModel incidentsMapViewModel;
 
@@ -47,6 +45,7 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
       public void onChanged(List<Incident> incidents) {
         for (Incident incident: incidents) {
           LatLng marker = new LatLng(Double.parseDouble(incident.getCoordinates()[0]), Double.parseDouble(incident.getCoordinates()[1]));
+          markerIncidentHashMap.put(marker, incident);
           googleMap.addMarker(new MarkerOptions().position(marker));
         }
       }
@@ -59,7 +58,8 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
 
   @Override
   public boolean onMarkerClick(Marker marker) {
-    Toast.makeText(getActivity(), "Marker Clicked", Toast.LENGTH_LONG).show();
+    IncidentsMapDialogFragment mapDialogFragment = new IncidentsMapDialogFragment(markerIncidentHashMap.get(marker.getPosition()));
+    mapDialogFragment.show(getChildFragmentManager(), "dialog");
     return false;
   }
 }
