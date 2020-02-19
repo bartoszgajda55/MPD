@@ -54,6 +54,7 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
     LatLng glasgow = new LatLng(55.86515, -4.25763);
     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
     googleMap.setOnMarkerClickListener(this);
+    googleMap.getUiSettings().setZoomControlsEnabled(true);
   }
 
   @Override
