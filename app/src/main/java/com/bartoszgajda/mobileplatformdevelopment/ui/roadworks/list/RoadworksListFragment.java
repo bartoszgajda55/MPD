@@ -3,6 +3,7 @@ package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +34,7 @@ public class RoadworksListFragment extends Fragment {
   private EditText searchInput;
   private List<Roadwork> roadworks;
   private List<PlannedRoadwork> plannedRoadworks;
+  private String feedFilterOption;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     roadworksListViewModel = ViewModelProviders.of(this).get(RoadworksListViewModel.class);
@@ -93,6 +95,22 @@ public class RoadworksListFragment extends Fragment {
 
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getTitle().equals("Filter feed")) {
+      this.showFeedFilterDialog();
+    }
+    if (item.getTitle().equals("Specify date")) {
+      this.showDateDialog();
+    }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showFeedFilterDialog() {
+    RoadworksListFeedDialogFragment roadworksListFeedDialogFragment = new RoadworksListFeedDialogFragment();
+    roadworksListFeedDialogFragment.show(getChildFragmentManager(), "feed-dialog");
+  }
+
+  private void showDateDialog() {
+    RoadworksListDateDialogFragment roadworksListDateDialogFragment = new RoadworksListDateDialogFragment();
+    roadworksListDateDialogFragment.show(getChildFragmentManager(), "date-dialog");
   }
 }
