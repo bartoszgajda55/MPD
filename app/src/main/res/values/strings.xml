@@ -17,4 +17,6 @@
 
     <string name="menu_planner_group">Planner</string>
     <string name="menu_planner">Journey Planner</string>
+
+    <string name="search">Search road…</string>
 </resources>
