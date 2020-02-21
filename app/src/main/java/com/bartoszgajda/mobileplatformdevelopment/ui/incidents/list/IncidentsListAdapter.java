@@ -14,8 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class IncidentsListAdapter extends ArrayAdapter<Incident> {
-  public IncidentsListAdapter(Context context, List<Incident> users) {
-    super(context,0, users);
+  public IncidentsListAdapter(Context context, List<Incident> incidents) {
+    super(context,0, incidents);
   }
 
   @Override

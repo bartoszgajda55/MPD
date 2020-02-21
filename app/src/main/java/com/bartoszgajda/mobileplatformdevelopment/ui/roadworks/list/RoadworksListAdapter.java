@@ -9,20 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
-import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
-import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class RoadworksListAdapter extends ArrayAdapter<Roadwork> {
-  public RoadworksListAdapter(Context context, List<Roadwork> users) {
-    super(context,0, users);
+public class RoadworksListAdapter extends ArrayAdapter<RoadworkModel> {
+  public RoadworksListAdapter(Context context, List<RoadworkModel> roadworks) {
+    super(context,0, roadworks);
   }
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    Roadwork roadwork = getItem(position);
+    RoadworkModel roadwork = getItem(position);
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext()).inflate(R.layout.roadworks_list_item, parent, false);
     }
