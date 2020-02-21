@@ -8,29 +8,30 @@ import androidx.lifecycle.ViewModel;
 
 import com.bartoszgajda.mobileplatformdevelopment.util.http.AsyncResponse;
 import com.bartoszgajda.mobileplatformdevelopment.util.http.SendHttpRequestTask;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.parser.RoadworksXmlParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoadworksListViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+  private MutableLiveData<List<Roadwork>> mRoadworks;
 
-    public RoadworksListViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Roadworks List fragment");
-        new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/roadworks.aspx", new RoadworksXmlParser(),
-            new AsyncResponse() {
-                @Override
-                public void processFinish(ArrayList<?> output) {
-                    ArrayList<Roadwork> roadworks = (ArrayList<Roadwork>) output;
-                    Log.d("api", roadworks.get(0).toString());
-                }
-            }).execute();
-    }
+  public RoadworksListViewModel() {
+    mRoadworks = new MutableLiveData<>();
+    new SendHttpRequestTask("https://trafficscotland.org/rss/feeds/roadworks.aspx", new RoadworksXmlParser(),
+        new AsyncResponse() {
+          @Override
+          public void processFinish(ArrayList<?> output) {
+            List<Roadwork> roadworks = (List<Roadwork>) output;
+            mRoadworks.setValue(roadworks);
+          }
+        }).execute();
+  }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+  public LiveData<List<Roadwork>> getRoadworks() {
+    return this.mRoadworks;
+  }
 }

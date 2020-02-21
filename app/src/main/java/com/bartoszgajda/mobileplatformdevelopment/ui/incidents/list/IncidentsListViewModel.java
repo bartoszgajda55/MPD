@@ -26,7 +26,6 @@ public class IncidentsListViewModel extends ViewModel {
           public void processFinish(ArrayList<?> output) {
             List<Incident> incidents = (List<Incident>) output;
             mIncidents.setValue(incidents);
-            Log.d("api", incidents.get(0).toString());
           }
         }).execute();
   }

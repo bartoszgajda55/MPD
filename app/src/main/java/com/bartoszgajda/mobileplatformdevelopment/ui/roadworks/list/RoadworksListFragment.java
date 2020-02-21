@@ -1,35 +1,64 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
+
+import java.util.List;
 
 public class RoadworksListFragment extends Fragment {
 
-    private RoadworksListViewModel roadworksListViewModel;
+  private RoadworksListViewModel roadworksListViewModel;
+  private ListView roadworkListView;
+  private RoadworksListAdapter roadworksListAdapter;
+  private EditText searchInput;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        roadworksListViewModel =
-                ViewModelProviders.of(this).get(RoadworksListViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_roadworks_list, container, false);
-        final TextView textView = root.findViewById(R.id.roadworks_list);
-        roadworksListViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    roadworksListViewModel = ViewModelProviders.of(this).get(RoadworksListViewModel.class);
+    final View root = inflater.inflate(R.layout.fragment_roadworks_list, container, false);
+
+    roadworkListView = root.findViewById(R.id.roadworks_list);
+    searchInput = root.findViewById(R.id.roadworks_list_search);
+
+    roadworksListViewModel.getRoadworks().observe(this, new Observer<List<Roadwork>>() {
+      @Override
+      public void onChanged(List<Roadwork> incidents) {
+        roadworksListAdapter = new RoadworksListAdapter(root.getContext(), incidents);
+        roadworkListView.setAdapter(roadworksListAdapter);
+        roadworksListAdapter.notifyDataSetChanged();
+      }
+    });
+
+    searchInput.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        RoadworksListFragment.this.roadworksListAdapter.getFilter().filter(charSequence);
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+
+      }
+    });
+
+    return root;
+  }
 }
