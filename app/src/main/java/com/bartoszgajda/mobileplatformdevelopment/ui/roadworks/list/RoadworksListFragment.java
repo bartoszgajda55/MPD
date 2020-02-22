@@ -27,6 +27,7 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RoadworksListFragment extends Fragment {
@@ -127,7 +128,8 @@ public class RoadworksListFragment extends Fragment {
       case DATE_DAILOG_FRAGMENT:
         if (resultCode == Activity.RESULT_OK) {
           Bundle bundle = data.getExtras();
-          String resultDate = bundle.getString("selectedDate", "Both");
+          Calendar selectedDate = (Calendar) bundle.get("selectedDate");
+          this.filterListAdapterElementsByPublicationDate(selectedDate);
         }
         break;
       case FEED_FILTER_DIALOG_FRAGMENT:
@@ -139,6 +141,17 @@ public class RoadworksListFragment extends Fragment {
         break;
     }
     super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void filterListAdapterElementsByPublicationDate(Calendar publicationDate) {
+    for (int i = 0; i < roadworksListAdapter.getCount(); i++) {
+      final Calendar roadworkCalendar = Calendar.getInstance();
+      roadworkCalendar.setTime(roadworksListAdapter.getItem(i).getPublicationDate());
+      if (publicationDate.before(roadworkCalendar)) {
+        roadworksListAdapter.remove(roadworksListAdapter.getItem(i));
+      }
+    }
+    roadworksListAdapter.notifyDataSetChanged();
   }
 
   private void updateListAdapterWithFeedFilter(String feedFilterOption) {

@@ -9,7 +9,6 @@ import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class RoadworksListDateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -26,11 +25,8 @@ public class RoadworksListDateDialogFragment extends DialogFragment implements D
   public void onDateSet(DatePicker view, int year, int month, int day) {
     Calendar c = Calendar.getInstance();
     c.set(year, month, day);
-
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-    String formattedDate = sdf.format(c.getTime());
     Intent i = new Intent();
-    i.putExtra("selectedDate",formattedDate);
+    i.putExtra("selectedDate", c);
     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
   }
 }
