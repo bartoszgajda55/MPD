@@ -94,16 +94,16 @@ public class RoadworksListFragment extends Fragment {
 
   @Override
   public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
     inflater.inflate(R.menu.roadworks_menu, menu);
+    super.onCreateOptionsMenu(menu, inflater);
   }
 
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    if (item.getTitle().equals("Filter feed")) {
+    if (item.getItemId() == R.id.roadworks_filter) {
       this.showFeedFilterDialog();
     }
-    if (item.getTitle().equals("Specify date")) {
+    if (item.getItemId() == R.id.roadworks_date) {
       this.showDateDialog();
     }
     return super.onOptionsItemSelected(item);
