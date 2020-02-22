@@ -109,27 +109,6 @@ public class RoadworksListFragment extends Fragment {
     return super.onOptionsItemSelected(item);
   }
 
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    switch (requestCode) {
-      case DATE_DAILOG_FRAGMENT:
-        if (resultCode == Activity.RESULT_OK) {
-          Bundle bundle = data.getExtras();
-          String resultDate = bundle.getString("selectedDate","error");
-          Log.d("dialog-date", resultDate);
-        }
-        break;
-      case FEED_FILTER_DIALOG_FRAGMENT:
-        if (resultCode == Activity.RESULT_OK) {
-          Bundle bundle = data.getExtras();
-          String resultDate = bundle.getString("selectedFeedFilter","error");
-          Log.d("dialog-feed-filter", resultDate);
-        }
-        break;
-    }
-    super.onActivityResult(requestCode, resultCode, data);
-  }
-
   private void showFeedFilterDialog() {
     RoadworksListFeedDialogFragment roadworksListFeedDialogFragment = new RoadworksListFeedDialogFragment();
     roadworksListFeedDialogFragment.setTargetFragment(RoadworksListFragment.this, FEED_FILTER_DIALOG_FRAGMENT);
@@ -140,5 +119,42 @@ public class RoadworksListFragment extends Fragment {
     RoadworksListDateDialogFragment roadworksListDateDialogFragment = new RoadworksListDateDialogFragment();
     roadworksListDateDialogFragment.setTargetFragment(RoadworksListFragment.this, DATE_DAILOG_FRAGMENT);
     roadworksListDateDialogFragment.show(getFragmentManager().beginTransaction(), "date-dialog");
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    switch (requestCode) {
+      case DATE_DAILOG_FRAGMENT:
+        if (resultCode == Activity.RESULT_OK) {
+          Bundle bundle = data.getExtras();
+          String resultDate = bundle.getString("selectedDate", "Both");
+        }
+        break;
+      case FEED_FILTER_DIALOG_FRAGMENT:
+        if (resultCode == Activity.RESULT_OK) {
+          Bundle bundle = data.getExtras();
+          String resultFeedFilter = bundle.getString("selectedFeedFilter", "Both");
+          this.updateListAdapterWithFeedFilter(resultFeedFilter);
+        }
+        break;
+    }
+    super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void updateListAdapterWithFeedFilter(String feedFilterOption) {
+    RoadworksListFragment.this.roadworksListAdapter.clear();
+    switch (feedFilterOption) {
+      case "Current Roadworks":
+        RoadworksListFragment.this.roadworksListAdapter.addAll(this.roadworks);
+        break;
+      case "Planned Roadworks":
+        RoadworksListFragment.this.roadworksListAdapter.addAll(this.plannedRoadworks);
+        break;
+      case "Both":
+        RoadworksListFragment.this.roadworksListAdapter.addAll(this.roadworks);
+        RoadworksListFragment.this.roadworksListAdapter.addAll(this.plannedRoadworks);
+        break;
+    }
+    RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
   }
 }
