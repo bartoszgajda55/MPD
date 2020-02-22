@@ -1,6 +1,7 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +26,24 @@ public class RoadworksListAdapter extends ArrayAdapter<RoadworkModel> {
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext()).inflate(R.layout.roadworks_list_item, parent, false);
     }
-    TextView incidentTitle = (TextView) convertView.findViewById(R.id.roadwork_title);
-    TextView incidentDescription = (TextView) convertView.findViewById(R.id.roadwork_description);
-    TextView incidentLink = (TextView) convertView.findViewById(R.id.roadwork_link);
-    TextView incidentPubdate = (TextView) convertView.findViewById(R.id.roadwork_pubdate);
+    TextView roadworkTitle = (TextView) convertView.findViewById(R.id.roadwork_title);
+    TextView roadworkType = (TextView) convertView.findViewById(R.id.roadwork_type);
+    TextView roadworkDescription = (TextView) convertView.findViewById(R.id.roadwork_description);
+    TextView roadworkLink = (TextView) convertView.findViewById(R.id.roadwork_link);
+    TextView roadworkPubdate = (TextView) convertView.findViewById(R.id.roadwork_pubdate);
 
-    incidentTitle.setText(roadwork.getTitle());
-    incidentDescription.setText(Html.fromHtml(roadwork.getDescription()));
-    incidentLink.setText("More: " + roadwork.getLink());
-    incidentPubdate.setText("Published: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(roadwork.getPublicationDate()));
+    roadworkTitle.setText(roadwork.getTitle());
+    roadworkDescription.setText(Html.fromHtml(roadwork.getDescription()));
+    roadworkLink.setText("More: " + roadwork.getLink());
+    roadworkPubdate.setText("Published: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(roadwork.getPublicationDate()));
+
+    if (roadwork.getType().equals("current")) {
+      roadworkType.setText(R.string.roadworks_type_current);
+      roadworkType.setTextColor(parent.getResources().getColor(R.color.brandGreen));
+    } else {
+      roadworkType.setText(R.string.roadworks_type_planned);
+      roadworkType.setTextColor(parent.getResources().getColor(R.color.brandYellow));
+    }
 
     return convertView;
   }

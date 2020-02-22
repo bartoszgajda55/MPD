@@ -8,6 +8,7 @@ public abstract class RoadworkModel {
   private String link;
   private String[] coordinates;
   private Date publicationDate;
+  private String type;
 
   public String getTitle() {
     return title;
@@ -27,6 +28,10 @@ public abstract class RoadworkModel {
 
   public String getLink() {
     return link;
+  }
+
+  public String getType() {
+    return type;
   }
 
   public void setLink(String link) {
