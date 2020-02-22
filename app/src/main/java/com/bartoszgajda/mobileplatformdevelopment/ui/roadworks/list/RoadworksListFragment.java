@@ -1,5 +1,7 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoadworksListFragment extends Fragment {
+  public static final int DATE_DAILOG_FRAGMENT = 1;
+  public static final int FEED_FILTER_DIALOG_FRAGMENT = 2;
 
   private RoadworksListViewModel roadworksListViewModel;
   private ListView roadworkListView;
@@ -104,13 +109,36 @@ public class RoadworksListFragment extends Fragment {
     return super.onOptionsItemSelected(item);
   }
 
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    switch (requestCode) {
+      case DATE_DAILOG_FRAGMENT:
+        if (resultCode == Activity.RESULT_OK) {
+          Bundle bundle = data.getExtras();
+          String resultDate = bundle.getString("selectedDate","error");
+          Log.d("dialog-date", resultDate);
+        }
+        break;
+      case FEED_FILTER_DIALOG_FRAGMENT:
+        if (resultCode == Activity.RESULT_OK) {
+          Bundle bundle = data.getExtras();
+          String resultDate = bundle.getString("selectedFeedFilter","error");
+          Log.d("dialog-feed-filter", resultDate);
+        }
+        break;
+    }
+    super.onActivityResult(requestCode, resultCode, data);
+  }
+
   private void showFeedFilterDialog() {
     RoadworksListFeedDialogFragment roadworksListFeedDialogFragment = new RoadworksListFeedDialogFragment();
-    roadworksListFeedDialogFragment.show(getChildFragmentManager(), "feed-dialog");
+    roadworksListFeedDialogFragment.setTargetFragment(RoadworksListFragment.this, FEED_FILTER_DIALOG_FRAGMENT);
+    roadworksListFeedDialogFragment.show(getFragmentManager().beginTransaction(), "date-feed-filter");
   }
 
   private void showDateDialog() {
     RoadworksListDateDialogFragment roadworksListDateDialogFragment = new RoadworksListDateDialogFragment();
-    roadworksListDateDialogFragment.show(getChildFragmentManager(), "date-dialog");
+    roadworksListDateDialogFragment.setTargetFragment(RoadworksListFragment.this, DATE_DAILOG_FRAGMENT);
+    roadworksListDateDialogFragment.show(getFragmentManager().beginTransaction(), "date-dialog");
   }
 }

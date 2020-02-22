@@ -1,8 +1,10 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,7 +26,6 @@ public class RoadworksListFeedDialogFragment extends DialogFragment {
           @Override
           public void onClick(DialogInterface dialog, int which) {
             RoadworksListFeedDialogFragment.this.option = charSequence[which].toString();
-            Log.d("dialog", RoadworksListFeedDialogFragment.this.option);
           }
         })
         .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
@@ -41,5 +42,12 @@ public class RoadworksListFeedDialogFragment extends DialogFragment {
         });
 
     return builder.create();
+  }
+
+  @Override
+  public void onDismiss(@NonNull DialogInterface dialog) {
+    Intent i = new Intent();
+    i.putExtra("selectedFeedFilter", this.option);
+    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
   }
 }
