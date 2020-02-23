@@ -24,12 +24,6 @@
         tools:layout="@layout/fragment_roadworks_list" />
 
     <fragment
-        android:id="@+id/nav_roadworks_map"
-        android:name="com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.map.RoadworksMapFragment"
-        android:label="@string/menu_roadworks_map"
-        tools:layout="@layout/fragment_roadworks_map" />
-
-    <fragment
         android:id="@+id/nav_planner"
         android:name="com.bartoszgajda.mobileplatformdevelopment.ui.planner.PlannerFragment"
         android:label="@string/menu_planner"
