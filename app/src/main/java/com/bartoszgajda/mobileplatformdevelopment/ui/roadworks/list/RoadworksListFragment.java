@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,9 +39,9 @@ public class RoadworksListFragment extends Fragment {
   private ListView roadworkListView;
   private RoadworksListAdapter roadworksListAdapter;
   private EditText searchInput;
+  private TextView roadworksCount;
   private List<Roadwork> roadworks;
   private List<PlannedRoadwork> plannedRoadworks;
-  private String feedFilterOption;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     roadworksListViewModel = ViewModelProviders.of(this).get(RoadworksListViewModel.class);
@@ -48,6 +49,7 @@ public class RoadworksListFragment extends Fragment {
 
     roadworkListView = root.findViewById(R.id.roadworks_list);
     searchInput = root.findViewById(R.id.roadworks_list_search);
+    roadworksCount = root.findViewById(R.id.roadworks_count);
 
     this.roadworks = new ArrayList<>();
     this.plannedRoadworks = new ArrayList<>();
@@ -60,6 +62,7 @@ public class RoadworksListFragment extends Fragment {
         RoadworksListFragment.this.roadworks = roadworks;
         RoadworksListFragment.this.roadworksListAdapter.addAll(roadworks);
         RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
+        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
       }
     });
 
@@ -69,23 +72,21 @@ public class RoadworksListFragment extends Fragment {
         RoadworksListFragment.this.plannedRoadworks = plannedRoadworks;
         RoadworksListFragment.this.roadworksListAdapter.addAll(plannedRoadworks);
         RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
+        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
       }
     });
 
     searchInput.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        RoadworksListFragment.this.roadworksListAdapter.getFilter().filter(charSequence);
       }
-
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        RoadworksListFragment.this.roadworksListAdapter.getFilter().filter(charSequence);
+        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
       }
-
       @Override
       public void afterTextChanged(Editable editable) {
-
       }
     });
 
@@ -152,22 +153,24 @@ public class RoadworksListFragment extends Fragment {
       }
     }
     roadworksListAdapter.notifyDataSetChanged();
+    roadworksCount.setText("Roadworks count: " + this.roadworksListAdapter.getCount());
   }
 
   private void updateListAdapterWithFeedFilter(String feedFilterOption) {
-    RoadworksListFragment.this.roadworksListAdapter.clear();
+    this.roadworksListAdapter.clear();
     switch (feedFilterOption) {
       case "Current Roadworks":
-        RoadworksListFragment.this.roadworksListAdapter.addAll(this.roadworks);
+        this.roadworksListAdapter.addAll(this.roadworks);
         break;
       case "Planned Roadworks":
-        RoadworksListFragment.this.roadworksListAdapter.addAll(this.plannedRoadworks);
+        this.roadworksListAdapter.addAll(this.plannedRoadworks);
         break;
       case "Both":
-        RoadworksListFragment.this.roadworksListAdapter.addAll(this.roadworks);
-        RoadworksListFragment.this.roadworksListAdapter.addAll(this.plannedRoadworks);
+        this.roadworksListAdapter.addAll(this.roadworks);
+        this.roadworksListAdapter.addAll(this.plannedRoadworks);
         break;
     }
-    RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
+    this.roadworksListAdapter.notifyDataSetChanged();
+    roadworksCount.setText("Roadworks count: " + this.roadworksListAdapter.getCount());
   }
 }
