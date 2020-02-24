@@ -26,4 +26,8 @@
 
     <string name="roadworks_type_current">Current Roadwork</string>
     <string name="roadworks_type_planned">Planned Roadwork</string>
+
+    <string name="planner_origin">Origin…</string>
+    <string name="planner_destination">Destination…</string>
+    <string name="planner_plan">Show Directions</string>
 </resources>
