@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="@string/planner_origin" />
+        android:hint="@string/planner_origin" />
 
     <EditText
         android:id="@+id/planner_destination"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="@string/planner_destination" />
+        android:hint="@string/planner_destination" />
 
     <Button
         android:id="@+id/planner_plan"
