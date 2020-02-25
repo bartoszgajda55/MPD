@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
@@ -74,13 +75,18 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     LatLng edinburgh = new LatLng(55.953251, -3.188267);
     this.googleMap.addMarker(new MarkerOptions().position(edinburgh));
 
-    this.googleMap.addPolyline(this.getPolyLineBetweenPlaces(glasgow, edinburgh));
+    List<LatLng> polyline = this.getPolyLineBetweenPlaces(glasgow, edinburgh);
+    PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.BLACK).width(15);
+    this.googleMap.addPolyline(polylineOptions);
+
+    boolean isOnPath = PolyUtil.isLocationOnPath(glasgow, polyline, false, 100.0);
+    Log.d("isOnPath", Boolean.toString(isOnPath));
 
     this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
     this.googleMap.getUiSettings().setZoomControlsEnabled(true);
   }
 
-  private PolylineOptions getPolyLineBetweenPlaces(LatLng origin, LatLng destination) {
+  private List<LatLng> getPolyLineBetweenPlaces(LatLng origin, LatLng destination) {
     String originString = origin.latitude + "," + origin.longitude;
     String destinationString = destination.latitude + "," + destination.longitude;
 
@@ -120,7 +126,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     } catch (Exception e) {
       Log.e("planner", e.getMessage());
     }
-    return new PolylineOptions().addAll(path).color(Color.BLACK).width(5);
+    return path;
   }
 
   @Override
