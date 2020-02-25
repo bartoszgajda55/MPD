@@ -1,5 +1,10 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.bartoszgajda.mobileplatformdevelopment.R;
+import com.bartoszgajda.mobileplatformdevelopment.util.map.IconConverter;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,8 +31,8 @@ import java.util.List;
 
 public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
   private HashMap<LatLng, Incident> markerIncidentHashMap = new HashMap<>();
-
   private IncidentsMapViewModel incidentsMapViewModel;
+  private IconConverter iconConverter = IconConverter.getInstance();
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     incidentsMapViewModel = ViewModelProviders.of(this).get(IncidentsMapViewModel.class);
@@ -46,7 +53,9 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
         for (Incident incident: incidents) {
           LatLng marker = new LatLng(Double.parseDouble(incident.getCoordinates()[0]), Double.parseDouble(incident.getCoordinates()[1]));
           markerIncidentHashMap.put(marker, incident);
-          googleMap.addMarker(new MarkerOptions().position(marker));
+          Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.announcement_24px)));
+          Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
+          googleMap.addMarker(new MarkerOptions().position(marker).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
         }
       }
     });

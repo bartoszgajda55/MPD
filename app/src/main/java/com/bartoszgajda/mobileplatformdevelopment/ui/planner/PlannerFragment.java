@@ -1,5 +1,6 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.planner;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
+import com.bartoszgajda.mobileplatformdevelopment.util.map.IconConverter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -42,6 +45,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private Button planButton;
   private MapView mapView;
   private GoogleMap googleMap;
+  private IconConverter iconConverter = IconConverter.getInstance();
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     plannerViewModel = ViewModelProviders.of(this).get(PlannerViewModel.class);
@@ -70,10 +74,13 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   public void onMapReady(GoogleMap googleMap) {
     this.googleMap = googleMap;
 
+    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.place_24px)));
+    Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
+
     LatLng glasgow = new LatLng(55.86515, -4.25763);
-    this.googleMap.addMarker(new MarkerOptions().position(glasgow));
+    this.googleMap.addMarker(new MarkerOptions().position(glasgow).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
     LatLng edinburgh = new LatLng(55.953251, -3.188267);
-    this.googleMap.addMarker(new MarkerOptions().position(edinburgh));
+    this.googleMap.addMarker(new MarkerOptions().position(edinburgh).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
 
     List<LatLng> polyline = this.getPolyLineBetweenPlaces(glasgow, edinburgh);
     PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.BLACK).width(15);
