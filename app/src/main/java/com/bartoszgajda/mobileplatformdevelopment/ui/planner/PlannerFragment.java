@@ -74,61 +74,53 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     LatLng edinburgh = new LatLng(55.953251, -3.188267);
     this.googleMap.addMarker(new MarkerOptions().position(edinburgh));
 
+    this.googleMap.addPolyline(this.getPolyLineBetweenPlaces(glasgow, edinburgh));
+
+    this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
+    this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+  }
+
+  private PolylineOptions getPolyLineBetweenPlaces(LatLng origin, LatLng destination) {
+    String originString = origin.latitude + "," + origin.longitude;
+    String destinationString = destination.latitude + "," + destination.longitude;
+
     List<LatLng> path = new ArrayList<>();
     GeoApiContext context = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
-    DirectionsApiRequest req = DirectionsApi.getDirections(context, "55.86515,-4.25763", "55.953251,-3.188267");
+    DirectionsApiRequest req = DirectionsApi.getDirections(context, originString, destinationString);
     try {
       DirectionsResult res = req.await();
-
       //Loop through legs and steps to get encoded polylines of each step
-      if (res.routes != null && res.routes.length > 0) {
-        DirectionsRoute route = res.routes[0];
-
-        if (route.legs !=null) {
-          for(int i=0; i<route.legs.length; i++) {
-            DirectionsLeg leg = route.legs[i];
-            if (leg.steps != null) {
-              for (int j=0; j<leg.steps.length;j++){
-                DirectionsStep step = leg.steps[j];
-                if (step.steps != null && step.steps.length >0) {
-                  for (int k=0; k<step.steps.length;k++){
-                    DirectionsStep step1 = step.steps[k];
-                    EncodedPolyline points1 = step1.polyline;
-                    if (points1 != null) {
-                      //Decode polyline and add points to list of route coordinates
-                      List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
-                      for (com.google.maps.model.LatLng coord1 : coords1) {
-                        path.add(new LatLng(coord1.lat, coord1.lng));
-                      }
-                    }
-                  }
-                } else {
-                  EncodedPolyline points = step.polyline;
-                  if (points != null) {
-                    //Decode polyline and add points to list of route coordinates
-                    List<com.google.maps.model.LatLng> coords = points.decodePath();
-                    for (com.google.maps.model.LatLng coord : coords) {
-                      path.add(new LatLng(coord.lat, coord.lng));
-                    }
-                  }
+      for (DirectionsRoute route : res.routes) {
+        for (DirectionsLeg leg : route.legs) {
+          for (DirectionsStep step : leg.steps) {
+            if (step.steps != null && step.steps.length > 0) {
+              for (DirectionsStep step1 : step.steps) {
+                EncodedPolyline polyline = step1.polyline;
+                if (polyline == null) {
+                  continue;
                 }
+                List<com.google.maps.model.LatLng> coordinates = polyline.decodePath();
+                for (com.google.maps.model.LatLng coordinate : coordinates) {
+                  path.add(new LatLng(coordinate.lat, coordinate.lng));
+                }
+              }
+            } else {
+              EncodedPolyline points = step.polyline;
+              if (points == null) {
+                continue;
+              }
+              List<com.google.maps.model.LatLng> coords = points.decodePath();
+              for (com.google.maps.model.LatLng coord : coords) {
+                path.add(new LatLng(coord.lat, coord.lng));
               }
             }
           }
         }
       }
     } catch (Exception e) {
-      Log.e("planner", e.getLocalizedMessage());
+      Log.e("planner", e.getMessage());
     }
-
-    //Draw the polyline
-    if (path.size() > 0) {
-      PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLACK).width(5);
-      this.googleMap.addPolyline(opts);
-    }
-
-    this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
-    this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+    return new PolylineOptions().addAll(path).color(Color.BLACK).width(5);
   }
 
   @Override
