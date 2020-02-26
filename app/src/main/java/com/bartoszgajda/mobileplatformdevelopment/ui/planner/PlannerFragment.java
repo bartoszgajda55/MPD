@@ -23,6 +23,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
@@ -39,9 +40,10 @@ import com.google.maps.model.EncodedPolyline;
 import com.google.maps.model.GeocodingResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class PlannerFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class PlannerFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener {
 
   private PlannerViewModel plannerViewModel;
   private EditText origin;
@@ -52,6 +54,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private IconConverter iconConverter = IconConverter.getInstance();
   private GeoApiContext geoApiContext;
   private List<? extends RoadworkModel> roadworks;
+  private HashMap<LatLng, RoadworkModel> pointRoadworkHashMap = new HashMap<>();
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     this.geoApiContext = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
@@ -94,6 +97,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   @Override
   public void onMapReady(GoogleMap googleMap) {
     this.googleMap = googleMap;
+    this.googleMap.setOnMarkerClickListener(this);
   }
 
   private void drawRouteBetweenTwoLocationAddresses(String origin, String destination) {
@@ -111,9 +115,17 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
       LatLng point = new LatLng(Double.parseDouble(roadwork.getCoordinates()[0]), Double.parseDouble(roadwork.getCoordinates()[1]));
       boolean isOnPath = PolyUtil.isLocationOnPath(point, polyline, false, 100.0);
       if (isOnPath) {
-        addRoadworkMarkerToGoogleMap(point, this.googleMap);
+        addRoadworkMarkerToGoogleMap(point, googleMap);
+        this.pointRoadworkHashMap.put(point, roadwork);
       }
     }
+  }
+
+  @Override
+  public boolean onMarkerClick(Marker marker) {
+    PlannerMapDialogFragment mapDialogFragment = new PlannerMapDialogFragment(this.pointRoadworkHashMap.get(marker.getPosition()));
+    mapDialogFragment.show(getChildFragmentManager(), "dialog");
+    return false;
   }
 
   private void setMapCameraOnLatLng(GoogleMap googleMap, LatLng position, int zoom) {
