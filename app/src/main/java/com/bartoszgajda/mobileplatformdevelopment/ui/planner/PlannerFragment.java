@@ -50,7 +50,6 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private GoogleMap googleMap;
   private IconConverter iconConverter = IconConverter.getInstance();
   private GeoApiContext geoApiContext;
-  private Polyline currentPolyline;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     this.geoApiContext = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
@@ -90,7 +89,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     drawLocationAddressMarkers(route[0], route[1]);
 
     List<LatLng> polyline = this.getPolyLineBetweenLocationAddresses(route[0], route[1]);
-    this.currentPolyline = drawPolylineOnGoogleMap(polyline, this.googleMap);
+    drawPolylineOnGoogleMap(polyline, this.googleMap);
 
     setMapCameraOnLatLng(this.googleMap, route[0], 6);
 
@@ -103,9 +102,9 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     googleMap.getUiSettings().setZoomControlsEnabled(true);
   }
 
-  private Polyline drawPolylineOnGoogleMap(List<LatLng> polyline, GoogleMap googleMap) {
+  private void drawPolylineOnGoogleMap(List<LatLng> polyline, GoogleMap googleMap) {
     PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.BLACK).width(15);
-    return googleMap.addPolyline(polylineOptions);
+    googleMap.addPolyline(polylineOptions);
   }
 
   private void drawLocationAddressMarkers(LatLng origin, LatLng destination) {

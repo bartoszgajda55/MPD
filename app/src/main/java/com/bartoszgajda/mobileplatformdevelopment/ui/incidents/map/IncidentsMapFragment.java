@@ -1,17 +1,12 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.map;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.map.IconConverter;
@@ -47,16 +42,13 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
   @Override
   public void onMapReady(final GoogleMap googleMap) {
 
-    incidentsMapViewModel.getIncidents().observe(this, new Observer<List<Incident>>() {
-      @Override
-      public void onChanged(List<Incident> incidents) {
-        for (Incident incident: incidents) {
-          LatLng marker = new LatLng(Double.parseDouble(incident.getCoordinates()[0]), Double.parseDouble(incident.getCoordinates()[1]));
-          markerIncidentHashMap.put(marker, incident);
-          Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.announcement_24px)));
-          Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
-          googleMap.addMarker(new MarkerOptions().position(marker).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
-        }
+    incidentsMapViewModel.getIncidents().observe(this, incidents -> {
+      for (Incident incident: incidents) {
+        LatLng marker = new LatLng(Double.parseDouble(incident.getCoordinates()[0]), Double.parseDouble(incident.getCoordinates()[1]));
+        markerIncidentHashMap.put(marker, incident);
+        Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.announcement_24px)));
+        Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
+        googleMap.addMarker(new MarkerOptions().position(marker).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
       }
     });
 
