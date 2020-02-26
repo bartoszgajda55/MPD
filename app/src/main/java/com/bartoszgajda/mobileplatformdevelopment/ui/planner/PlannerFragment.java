@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.map.IconConverter;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,13 +24,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.GeocodingApiRequest;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
@@ -50,6 +51,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private GoogleMap googleMap;
   private IconConverter iconConverter = IconConverter.getInstance();
   private GeoApiContext geoApiContext;
+  private List<? extends RoadworkModel> roadworks;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     this.geoApiContext = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
@@ -60,6 +62,16 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     this.destination = (EditText) root.findViewById(R.id.planner_destination);
     this.planButton = (Button) root.findViewById(R.id.planner_plan);
     this.mapView = (MapView) root.findViewById(R.id.planner_map);
+
+    this.roadworks = new ArrayList<>();
+
+    plannerViewModel.getRoadworks().observe(this, roadworks -> {
+      PlannerFragment.this.roadworks = roadworks;
+    });
+
+    plannerViewModel.getPlannedRoadworks().observe(this, plannedRoadworks -> {
+      PlannerFragment.this.roadworks = plannedRoadworks;
+    });
 
     this.mapView.onCreate(savedInstanceState);
     this.mapView.getMapAsync(this);
@@ -86,15 +98,22 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
 
   private void drawRouteBetweenTwoLocationAddresses(String origin, String destination) {
     LatLng[] route = getLatLngFromOriginAndDestinationLocationAddresses(origin, destination);
-    drawLocationAddressMarkers(route[0], route[1]);
+    addLocationAddressMarkersToGoogleMap(route[0], route[1], this.googleMap);
 
     List<LatLng> polyline = this.getPolyLineBetweenLocationAddresses(route[0], route[1]);
     drawPolylineOnGoogleMap(polyline, this.googleMap);
-
+    setRoadworksMarkersIfOnPath(polyline, this.roadworks, this.googleMap);
     setMapCameraOnLatLng(this.googleMap, route[0], 6);
+  }
 
-//    boolean isOnPath = PolyUtil.isLocationOnPath(glasgow, polyline, false, 100.0);
-//    Log.d("isOnPath", Boolean.toString(isOnPath));
+  private void setRoadworksMarkersIfOnPath(List<LatLng> polyline, List<? extends RoadworkModel> roadworks, GoogleMap googleMap) {
+    for (RoadworkModel roadwork: roadworks) {
+      LatLng point = new LatLng(Double.parseDouble(roadwork.getCoordinates()[0]), Double.parseDouble(roadwork.getCoordinates()[1]));
+      boolean isOnPath = PolyUtil.isLocationOnPath(point, polyline, false, 100.0);
+      if (isOnPath) {
+        addRoadworkMarkerToGoogleMap(point, this.googleMap);
+      }
+    }
   }
 
   private void setMapCameraOnLatLng(GoogleMap googleMap, LatLng position, int zoom) {
@@ -107,12 +126,19 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     googleMap.addPolyline(polylineOptions);
   }
 
-  private void drawLocationAddressMarkers(LatLng origin, LatLng destination) {
+  private void addRoadworkMarkerToGoogleMap(LatLng point, GoogleMap googleMap) {
+    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px)));
+    Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
+
+    googleMap.addMarker(new MarkerOptions().position(point).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
+  }
+
+  private void addLocationAddressMarkersToGoogleMap(LatLng origin, LatLng destination, GoogleMap googleMap) {
     Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.place_24px)));
     Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
 
-    this.googleMap.addMarker(new MarkerOptions().position(origin).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
-    this.googleMap.addMarker(new MarkerOptions().position(destination).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
+    googleMap.addMarker(new MarkerOptions().position(origin).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
+    googleMap.addMarker(new MarkerOptions().position(destination).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
   }
 
   private LatLng[] getLatLngFromOriginAndDestinationLocationAddresses(String origin, String destination) {

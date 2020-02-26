@@ -53,27 +53,21 @@ public class RoadworksListFragment extends Fragment {
 
     this.roadworks = new ArrayList<>();
     this.plannedRoadworks = new ArrayList<>();
-    roadworksListAdapter = new RoadworksListAdapter(root.getContext(), new ArrayList<RoadworkModel>());
+    roadworksListAdapter = new RoadworksListAdapter(root.getContext(), new ArrayList<>());
     roadworkListView.setAdapter(roadworksListAdapter);
 
-    roadworksListViewModel.getRoadworks().observe(this, new Observer<List<Roadwork>>() {
-      @Override
-      public void onChanged(List<Roadwork> roadworks) {
-        RoadworksListFragment.this.roadworks = roadworks;
-        RoadworksListFragment.this.roadworksListAdapter.addAll(roadworks);
-        RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
-        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
-      }
+    roadworksListViewModel.getRoadworks().observe(this, roadworks -> {
+      RoadworksListFragment.this.roadworks = roadworks;
+      RoadworksListFragment.this.roadworksListAdapter.addAll(roadworks);
+      RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
+      roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
     });
 
-    roadworksListViewModel.getPlannedRoadworks().observe(this, new Observer<List<PlannedRoadwork>>() {
-      @Override
-      public void onChanged(List<PlannedRoadwork> plannedRoadworks) {
-        RoadworksListFragment.this.plannedRoadworks = plannedRoadworks;
-        RoadworksListFragment.this.roadworksListAdapter.addAll(plannedRoadworks);
-        RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
-        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
-      }
+    roadworksListViewModel.getPlannedRoadworks().observe(this, plannedRoadworks -> {
+      RoadworksListFragment.this.plannedRoadworks = plannedRoadworks;
+      RoadworksListFragment.this.roadworksListAdapter.addAll(plannedRoadworks);
+      RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
+      roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
     });
 
     searchInput.addTextChangedListener(new TextWatcher() {

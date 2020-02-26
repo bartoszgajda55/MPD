@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">MobilePlatformDevelopment</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_incidents_group">Incidents</string>
     <string name="menu_incidents_list">Incidents List</string>
@@ -13,7 +10,6 @@
 
     <string name="menu_roadworks_group">Roadworks</string>
     <string name="menu_roadworks_list">Roadworks List</string>
-    <string name="menu_roadworks_map">Roadworks on Map</string>
 
     <string name="menu_planner_group">Planner</string>
     <string name="menu_planner">Journey Planner</string>
