@@ -46,7 +46,7 @@ public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback
       for (Incident incident: incidents) {
         LatLng marker = new LatLng(Double.parseDouble(incident.getCoordinates()[0]), Double.parseDouble(incident.getCoordinates()[1]));
         markerIncidentHashMap.put(marker, incident);
-        Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.announcement_24px)));
+        Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.announcement_24px_red)));
         Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
         googleMap.addMarker(new MarkerOptions().position(marker).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
       }

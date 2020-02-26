@@ -139,14 +139,14 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   }
 
   private void addRoadworkMarkerToGoogleMap(LatLng point, GoogleMap googleMap) {
-    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px)));
+    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px_yellow)));
     Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
 
     googleMap.addMarker(new MarkerOptions().position(point).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
   }
 
   private void addLocationAddressMarkersToGoogleMap(LatLng origin, LatLng destination, GoogleMap googleMap) {
-    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.place_24px)));
+    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.place_24px_green)));
     Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
 
     googleMap.addMarker(new MarkerOptions().position(origin).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
