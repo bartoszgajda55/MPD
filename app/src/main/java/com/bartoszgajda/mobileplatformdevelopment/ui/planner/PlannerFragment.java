@@ -72,16 +72,17 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
 
   @Override
   public void onClick(View view) {
-    Log.d("planner", "Origin: " + this.origin.getText());
-    Log.d("planner", "Destination: " + this.destination.getText());
+    clearMap(this.googleMap);
+    drawRouteBetweenTwoLocationAddresses(this.origin.getText().toString(), this.destination.getText().toString());
+  }
+
+  private void clearMap(GoogleMap googleMap) {
+    googleMap.clear();
   }
 
   @Override
   public void onMapReady(GoogleMap googleMap) {
     this.googleMap = googleMap;
-    String originName = "Glasgow, UK";
-    String destinationName = "Edinburgh, UK";
-    drawRouteBetweenTwoLocationAddresses(originName, destinationName);
   }
 
   private void drawRouteBetweenTwoLocationAddresses(String origin, String destination) {
