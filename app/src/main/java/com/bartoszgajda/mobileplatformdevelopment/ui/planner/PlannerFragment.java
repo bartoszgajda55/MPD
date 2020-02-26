@@ -23,16 +23,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
-import com.google.maps.android.PolyUtil;
+import com.google.maps.GeocodingApi;
+import com.google.maps.GeocodingApiRequest;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
+import com.google.maps.model.GeocodingResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +49,11 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private MapView mapView;
   private GoogleMap googleMap;
   private IconConverter iconConverter = IconConverter.getInstance();
+  private GeoApiContext geoApiContext;
+  private Polyline currentPolyline;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    this.geoApiContext = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
     plannerViewModel = ViewModelProviders.of(this).get(PlannerViewModel.class);
     View root = inflater.inflate(R.layout.fragment_planner, container, false);
 
@@ -73,36 +79,67 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   @Override
   public void onMapReady(GoogleMap googleMap) {
     this.googleMap = googleMap;
+    String originName = "Glasgow, UK";
+    String destinationName = "Edinburgh, UK";
+    drawRouteBetweenTwoLocationAddresses(originName, destinationName);
+  }
 
+  private void drawRouteBetweenTwoLocationAddresses(String origin, String destination) {
+    LatLng[] route = getLatLngFromOriginAndDestinationLocationAddresses(origin, destination);
+    drawLocationAddressMarkers(route[0], route[1]);
+
+    List<LatLng> polyline = this.getPolyLineBetweenLocationAddresses(route[0], route[1]);
+    this.currentPolyline = drawPolylineOnGoogleMap(polyline, this.googleMap);
+
+    setMapCameraOnLatLng(this.googleMap, route[0], 6);
+
+//    boolean isOnPath = PolyUtil.isLocationOnPath(glasgow, polyline, false, 100.0);
+//    Log.d("isOnPath", Boolean.toString(isOnPath));
+  }
+
+  private void setMapCameraOnLatLng(GoogleMap googleMap, LatLng position, int zoom) {
+    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoom));
+    googleMap.getUiSettings().setZoomControlsEnabled(true);
+  }
+
+  private Polyline drawPolylineOnGoogleMap(List<LatLng> polyline, GoogleMap googleMap) {
+    PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.BLACK).width(15);
+    return googleMap.addPolyline(polylineOptions);
+  }
+
+  private void drawLocationAddressMarkers(LatLng origin, LatLng destination) {
     Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.place_24px)));
     Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
 
-    LatLng glasgow = new LatLng(55.86515, -4.25763);
-    this.googleMap.addMarker(new MarkerOptions().position(glasgow).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
-    LatLng edinburgh = new LatLng(55.953251, -3.188267);
-    this.googleMap.addMarker(new MarkerOptions().position(edinburgh).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
-
-    List<LatLng> polyline = this.getPolyLineBetweenPlaces(glasgow, edinburgh);
-    PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.BLACK).width(15);
-    this.googleMap.addPolyline(polylineOptions);
-
-    boolean isOnPath = PolyUtil.isLocationOnPath(glasgow, polyline, false, 100.0);
-    Log.d("isOnPath", Boolean.toString(isOnPath));
-
-    this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(glasgow, 6));
-    this.googleMap.getUiSettings().setZoomControlsEnabled(true);
+    this.googleMap.addMarker(new MarkerOptions().position(origin).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
+    this.googleMap.addMarker(new MarkerOptions().position(destination).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
   }
 
-  private List<LatLng> getPolyLineBetweenPlaces(LatLng origin, LatLng destination) {
+  private LatLng[] getLatLngFromOriginAndDestinationLocationAddresses(String origin, String destination) {
+    GeocodingApiRequest originReq = GeocodingApi.geocode(this.geoApiContext, origin);
+    GeocodingApiRequest destinationReq = GeocodingApi.geocode(this.geoApiContext, destination);
+    try {
+      GeocodingResult[] originRes = originReq.await();
+      GeocodingResult[] destinationRes = destinationReq.await();
+
+      LatLng originLatLng = new LatLng(originRes[0].geometry.location.lat, originRes[0].geometry.location.lng);
+      LatLng destinationLatLng = new LatLng(destinationRes[0].geometry.location.lat, destinationRes[0].geometry.location.lng);
+
+      return new LatLng[]{originLatLng, destinationLatLng};
+    } catch (Exception e) {
+      Log.e("planner", e.getMessage());
+    }
+    return null;
+  }
+
+  private List<LatLng> getPolyLineBetweenLocationAddresses(LatLng origin, LatLng destination) {
     String originString = origin.latitude + "," + origin.longitude;
     String destinationString = destination.latitude + "," + destination.longitude;
 
     List<LatLng> path = new ArrayList<>();
-    GeoApiContext context = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
-    DirectionsApiRequest req = DirectionsApi.getDirections(context, originString, destinationString);
+    DirectionsApiRequest req = DirectionsApi.getDirections(this.geoApiContext, originString, destinationString);
     try {
       DirectionsResult res = req.await();
-      //Loop through legs and steps to get encoded polylines of each step
       for (DirectionsRoute route : res.routes) {
         for (DirectionsLeg leg : route.legs) {
           for (DirectionsStep step : leg.steps) {
