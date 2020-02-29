@@ -23,6 +23,7 @@
     <string name="roadworks_type_current">Current Roadwork</string>
     <string name="roadworks_type_planned">Planned Roadwork</string>
 
+    <string name="planner_description">Type in origin place name (eg. Glasgow), destination place name (eg. Edinburgh), and you will be presented with current (red marker) and planned (yellow marker) roadworks on this route. Click on yellow marker to get more information.</string>
     <string name="planner_origin">Origin…</string>
     <string name="planner_destination">Destination…</string>
     <string name="planner_plan">Show Directions</string>

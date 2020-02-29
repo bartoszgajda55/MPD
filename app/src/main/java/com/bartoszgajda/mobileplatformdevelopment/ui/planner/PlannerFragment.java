@@ -115,7 +115,7 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
       LatLng point = new LatLng(Double.parseDouble(roadwork.getCoordinates()[0]), Double.parseDouble(roadwork.getCoordinates()[1]));
       boolean isOnPath = PolyUtil.isLocationOnPath(point, polyline, false, 100.0);
       if (isOnPath) {
-        addRoadworkMarkerToGoogleMap(point, googleMap);
+        addRoadworkMarkerToGoogleMap(point, googleMap, roadwork.getType());
         this.pointRoadworkHashMap.put(point, roadwork);
       }
     }
@@ -138,8 +138,13 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
     googleMap.addPolyline(polylineOptions);
   }
 
-  private void addRoadworkMarkerToGoogleMap(LatLng point, GoogleMap googleMap) {
-    Bitmap icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px_yellow)));
+  private void addRoadworkMarkerToGoogleMap(LatLng point, GoogleMap googleMap, String type) {
+    Bitmap icon;
+    if (type.equals("current")) {
+      icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px_red)));
+    } else {
+      icon = iconConverter.getMarkerBitmapFromDrawable((getResources().getDrawable(R.drawable.square_foot_24px_yellow)));
+    }
     Bitmap largerIcon = Bitmap.createScaledBitmap(icon, 120, 120, false);
 
     googleMap.addMarker(new MarkerOptions().position(point).icon(BitmapDescriptorFactory.fromBitmap(largerIcon)));
