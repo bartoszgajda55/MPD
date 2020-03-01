@@ -5,6 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IconConverter {
   private static final IconConverter ourInstance = new IconConverter();
 

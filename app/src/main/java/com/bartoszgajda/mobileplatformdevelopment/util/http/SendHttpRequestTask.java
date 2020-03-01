@@ -8,6 +8,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class SendHttpRequestTask extends AsyncTask<String, Void, ArrayList<?>> {
   private String url;
   private XmlParser parser;
@@ -33,7 +37,7 @@ public class SendHttpRequestTask extends AsyncTask<String, Void, ArrayList<?>> {
       if (inputStream == null)
         return null;
 
-      return this.parser.parseXmlToIncidentsArrayList(inputStream);
+      return this.parser.parseXmlToJavaObject(inputStream);
     } catch (IOException e) {
       e.printStackTrace();
     } finally {

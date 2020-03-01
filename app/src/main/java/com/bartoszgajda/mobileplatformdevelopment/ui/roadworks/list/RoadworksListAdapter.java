@@ -22,6 +22,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class RoadworksListAdapter extends ArrayAdapter<RoadworkModel> {
   public RoadworksListAdapter(Context context, List<RoadworkModel> roadworks) {
     super(context,0, roadworks);

@@ -13,6 +13,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsListAdapter extends ArrayAdapter<Incident> {
   public IncidentsListAdapter(Context context, List<Incident> incidents) {
     super(context,0, incidents);

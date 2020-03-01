@@ -14,6 +14,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.parser.IncidentsXmlParser
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsMapViewModel extends ViewModel {
 
   private MutableLiveData<List<Incident>> mIncidents;

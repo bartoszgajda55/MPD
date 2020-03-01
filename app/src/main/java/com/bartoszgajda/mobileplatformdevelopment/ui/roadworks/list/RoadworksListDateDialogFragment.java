@@ -11,6 +11,10 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class RoadworksListDateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {

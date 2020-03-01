@@ -13,6 +13,10 @@ import androidx.fragment.app.DialogFragment;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class RoadworksListFeedDialogFragment extends DialogFragment {
   private String option;
 

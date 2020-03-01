@@ -9,9 +9,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsXmlParser extends XmlParser {
   @Override
-  public ArrayList<Incident> parseXmlToIncidentsArrayList(InputStream inputStream) {
+  public ArrayList<Incident> parseXmlToJavaObject(InputStream inputStream) {
     try {
       XmlPullParserFactory parserFactory = XmlPullParserFactory.newInstance();
       XmlPullParser parser = parserFactory.newPullParser();

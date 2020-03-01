@@ -12,6 +12,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.parser.RoadworksXmlParser
 
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class PlannerViewModel extends ViewModel {
 
   private MutableLiveData<List<Roadwork>> mRoadworks;

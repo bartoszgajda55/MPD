@@ -11,6 +11,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsMapDialogFragment extends DialogFragment {
   private Incident incident;
 

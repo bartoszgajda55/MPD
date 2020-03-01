@@ -14,6 +14,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.parser.RoadworksXmlParser
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class RoadworksListViewModel extends ViewModel {
 
   private MutableLiveData<List<Roadwork>> mRoadworks;

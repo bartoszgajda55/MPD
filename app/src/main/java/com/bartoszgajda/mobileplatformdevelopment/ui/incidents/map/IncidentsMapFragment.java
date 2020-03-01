@@ -24,6 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsMapFragment extends Fragment implements OnMapReadyCallback, OnMarkerClickListener {
   private HashMap<LatLng, Incident> markerIncidentHashMap = new HashMap<>();
   private IncidentsMapViewModel incidentsMapViewModel;

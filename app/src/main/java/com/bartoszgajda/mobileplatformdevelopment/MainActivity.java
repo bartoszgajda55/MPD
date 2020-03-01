@@ -16,9 +16,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class MainActivity extends AppCompatActivity {
-    // TODO - change to this - https://github.com/Atr07/drawer-with-bottom-navigation-architecture
-
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -29,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_incidents_list, R.id.nav_incidents_map, R.id.nav_roadworks_list, R.id.nav_planner)
                 .setDrawerLayout(drawer)

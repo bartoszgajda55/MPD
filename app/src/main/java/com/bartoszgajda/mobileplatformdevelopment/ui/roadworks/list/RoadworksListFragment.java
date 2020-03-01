@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class RoadworksListFragment extends Fragment {
   public static final int DATE_DAILOG_FRAGMENT = 1;
   public static final int FEED_FILTER_DIALOG_FRAGMENT = 2;

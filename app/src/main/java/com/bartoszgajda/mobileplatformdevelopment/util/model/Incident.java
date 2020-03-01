@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class Incident {
   private String title;
   private String description;

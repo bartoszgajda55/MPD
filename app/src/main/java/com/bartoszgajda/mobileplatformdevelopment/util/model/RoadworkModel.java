@@ -2,6 +2,10 @@ package com.bartoszgajda.mobileplatformdevelopment.util.model;
 
 import java.util.Date;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public abstract class RoadworkModel {
   private String title;
   private String description;

@@ -13,6 +13,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class PlannerMapDialogFragment extends DialogFragment {
   private RoadworkModel roadwork;
 

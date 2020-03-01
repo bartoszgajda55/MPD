@@ -19,6 +19,10 @@ import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 
 import java.util.List;
 
+/**
+ * @author Bartosz Gajda
+ * @matricNumber S1631175
+ */
 public class IncidentsListFragment extends Fragment {
 
   private IncidentsListViewModel incidentsListViewModel;
