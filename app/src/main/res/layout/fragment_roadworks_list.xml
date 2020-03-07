@@ -14,9 +14,19 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:hint="@string/search"
         android:inputType="textVisiblePassword" />
+
+    <Button
+        android:id="@+id/roadwork_show_on_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/roadworks_show_on_map" />
 
     <TextView
         android:id="@+id/roadworks_count"

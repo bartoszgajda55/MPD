@@ -6,7 +6,6 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,13 +20,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.PlannedRoadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
-import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,8 +35,9 @@ import java.util.List;
  * @matricNumber S1631175
  */
 public class RoadworksListFragment extends Fragment {
-  public static final int DATE_DAILOG_FRAGMENT = 1;
-  public static final int FEED_FILTER_DIALOG_FRAGMENT = 2;
+  private static final int DATE_DIALOG_FRAGMENT = 1;
+  private static final int FEED_FILTER_DIALOG_FRAGMENT = 2;
+  private static final int MAP_DIALOG_FRAGMENT = 3;
 
   private RoadworksListViewModel roadworksListViewModel;
   private ListView roadworkListView;
@@ -97,7 +95,9 @@ public class RoadworksListFragment extends Fragment {
     });
 
     showOnMap.setOnClickListener(view -> {
-      Log.d("roadworks", "Count: " + this.roadworksListAdapter.getCount());
+      RoadworksListMapDialogFragment roadworksListMapDialogFragment = new RoadworksListMapDialogFragment();
+      roadworksListMapDialogFragment.setTargetFragment(RoadworksListFragment.this, MAP_DIALOG_FRAGMENT);
+      roadworksListMapDialogFragment.show(getFragmentManager().beginTransaction(), "map");
     });
 
     setHasOptionsMenu(true);
@@ -129,14 +129,14 @@ public class RoadworksListFragment extends Fragment {
 
   private void showDateDialog() {
     RoadworksListDateDialogFragment roadworksListDateDialogFragment = new RoadworksListDateDialogFragment();
-    roadworksListDateDialogFragment.setTargetFragment(RoadworksListFragment.this, DATE_DAILOG_FRAGMENT);
+    roadworksListDateDialogFragment.setTargetFragment(RoadworksListFragment.this, DATE_DIALOG_FRAGMENT);
     roadworksListDateDialogFragment.show(getFragmentManager().beginTransaction(), "date-dialog");
   }
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     switch (requestCode) {
-      case DATE_DAILOG_FRAGMENT:
+      case DATE_DIALOG_FRAGMENT:
         if (resultCode == Activity.RESULT_OK) {
           Bundle bundle = data.getExtras();
           Calendar selectedDate = (Calendar) bundle.get("selectedDate");
