@@ -29,11 +29,7 @@ public class IncidentsMapDialogFragment extends DialogFragment {
     builder
         .setTitle(incident.getTitle())
         .setMessage(incident.getDescription() + "\n\n" + "Published: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(incident.getPublicationDate()))
-        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialogInterface, int i) {
-          }
-        });
+        .setNegativeButton("Close", (dialogInterface, i) -> dialogInterface.dismiss());
     return builder.create();
   }
 }

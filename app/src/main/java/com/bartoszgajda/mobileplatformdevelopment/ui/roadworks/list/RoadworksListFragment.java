@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.PlannedRoadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
+import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,7 +96,11 @@ public class RoadworksListFragment extends Fragment {
     });
 
     showOnMap.setOnClickListener(view -> {
-      RoadworksListMapDialogFragment roadworksListMapDialogFragment = new RoadworksListMapDialogFragment();
+      List<RoadworkModel> filteredRoadworks = new ArrayList<>();
+      for(int i = 0; i < this.roadworksListAdapter.getCount(); i++) {
+        filteredRoadworks.add(this.roadworksListAdapter.getItem(i));
+      }
+      RoadworksListMapDialogFragment roadworksListMapDialogFragment = new RoadworksListMapDialogFragment(filteredRoadworks);
       roadworksListMapDialogFragment.setTargetFragment(RoadworksListFragment.this, MAP_DIALOG_FRAGMENT);
       roadworksListMapDialogFragment.show(getFragmentManager().beginTransaction(), "map");
     });
