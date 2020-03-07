@@ -92,6 +92,7 @@ public class RoadworksListFragment extends Fragment {
       @Override
       public void onChanged() {
         roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
+        showOnMap.setText("Show " + RoadworksListFragment.this.roadworksListAdapter.getCount() + " roadworks on Map");
       }
     });
 
