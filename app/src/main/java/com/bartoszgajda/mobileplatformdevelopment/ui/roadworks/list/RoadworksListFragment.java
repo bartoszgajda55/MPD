@@ -2,6 +2,7 @@ package com.bartoszgajda.mobileplatformdevelopment.ui.roadworks.list;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class RoadworksListFragment extends Fragment {
   private RoadworksListAdapter roadworksListAdapter;
   private EditText searchInput;
   private TextView roadworksCount;
+  private Button showOnMap;
   private List<Roadwork> roadworks;
   private List<PlannedRoadwork> plannedRoadworks;
 
@@ -54,6 +57,7 @@ public class RoadworksListFragment extends Fragment {
     roadworkListView = root.findViewById(R.id.roadworks_list);
     searchInput = root.findViewById(R.id.roadworks_list_search);
     roadworksCount = root.findViewById(R.id.roadworks_count);
+    showOnMap = root.findViewById(R.id.roadwork_show_on_map);
 
     this.roadworks = new ArrayList<>();
     this.plannedRoadworks = new ArrayList<>();
@@ -64,14 +68,12 @@ public class RoadworksListFragment extends Fragment {
       RoadworksListFragment.this.roadworks = roadworks;
       RoadworksListFragment.this.roadworksListAdapter.addAll(roadworks);
       RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
-      roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
     });
 
     roadworksListViewModel.getPlannedRoadworks().observe(this, plannedRoadworks -> {
       RoadworksListFragment.this.plannedRoadworks = plannedRoadworks;
       RoadworksListFragment.this.roadworksListAdapter.addAll(plannedRoadworks);
       RoadworksListFragment.this.roadworksListAdapter.notifyDataSetChanged();
-      roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
     });
 
     searchInput.addTextChangedListener(new TextWatcher() {
@@ -81,11 +83,21 @@ public class RoadworksListFragment extends Fragment {
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         RoadworksListFragment.this.roadworksListAdapter.getFilter().filter(charSequence);
-        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
       }
       @Override
       public void afterTextChanged(Editable editable) {
       }
+    });
+
+    this.roadworksListAdapter.registerDataSetObserver(new DataSetObserver() {
+      @Override
+      public void onChanged() {
+        roadworksCount.setText("Roadworks count: " + RoadworksListFragment.this.roadworksListAdapter.getCount());
+      }
+    });
+
+    showOnMap.setOnClickListener(view -> {
+      Log.d("roadworks", "Count: " + this.roadworksListAdapter.getCount());
     });
 
     setHasOptionsMenu(true);
