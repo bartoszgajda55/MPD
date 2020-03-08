@@ -2,8 +2,8 @@
 <!-- author: Bartosz Gajda -->
 <!-- matricNumber: S1631175 -->
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#3B28CC</color>
+    <color name="colorPrimaryDark">#2B1E95</color>
     <color name="colorAccent">#D81B60</color>
     <color name="brandGreen">#28965A</color>
     <color name="brandYellow">#E6C229</color>
