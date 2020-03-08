@@ -1,6 +1,7 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.incidents.list;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,11 +12,10 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
-import com.bartoszgajda.mobileplatformdevelopment.util.model.Incident;
 
 import java.util.List;
 
@@ -29,6 +29,7 @@ public class IncidentsListFragment extends Fragment {
   private ListView incidentsListView;
   private IncidentsListAdapter incidentsListAdapter;
   private EditText searchInput;
+  private SwipeRefreshLayout swipeRefreshLayout;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     incidentsListViewModel = ViewModelProviders.of(this).get(IncidentsListViewModel.class);
@@ -36,14 +37,12 @@ public class IncidentsListFragment extends Fragment {
 
     incidentsListView = root.findViewById(R.id.incidents_list);
     searchInput = root.findViewById(R.id.incidents_list_search);
+    swipeRefreshLayout = root.findViewById(R.id.incidents_refresh);
 
-    incidentsListViewModel.getIncidents().observe(this, new Observer<List<Incident>>() {
-      @Override
-      public void onChanged(List<Incident> incidents) {
-        incidentsListAdapter = new IncidentsListAdapter(root.getContext(), incidents);
-        incidentsListView.setAdapter(incidentsListAdapter);
-        incidentsListAdapter.notifyDataSetChanged();
-      }
+    incidentsListViewModel.getIncidents().observe(this, incidents -> {
+      incidentsListAdapter = new IncidentsListAdapter(root.getContext(), incidents);
+      incidentsListView.setAdapter(incidentsListAdapter);
+      incidentsListAdapter.notifyDataSetChanged();
     });
 
     searchInput.addTextChangedListener(new TextWatcher() {
@@ -62,6 +61,12 @@ public class IncidentsListFragment extends Fragment {
 
       }
     });
+
+    swipeRefreshLayout.setOnRefreshListener(() -> {
+      Handler handler = new Handler();
+      handler.postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 2000);
+    });
+
     return root;
   }
 }

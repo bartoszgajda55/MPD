@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- author: Bartosz Gajda -->
+<?xml version="1.0" encoding="utf-8"?><!-- author: Bartosz Gajda -->
 <!-- matricNumber: S1631175 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,8 +17,14 @@
         android:hint="@string/search"
         android:inputType="textVisiblePassword" />
 
-    <ListView
-        android:id="@+id/incidents_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/incidents_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/incidents_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

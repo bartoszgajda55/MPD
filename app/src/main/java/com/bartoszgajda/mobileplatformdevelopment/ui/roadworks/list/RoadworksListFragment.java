@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.PlannedRoadwork;
@@ -48,6 +50,7 @@ public class RoadworksListFragment extends Fragment {
   private Button showOnMap;
   private List<Roadwork> roadworks;
   private List<PlannedRoadwork> plannedRoadworks;
+  private SwipeRefreshLayout swipeRefreshLayout;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     roadworksListViewModel = ViewModelProviders.of(this).get(RoadworksListViewModel.class);
@@ -57,6 +60,7 @@ public class RoadworksListFragment extends Fragment {
     searchInput = root.findViewById(R.id.roadworks_list_search);
     roadworksCount = root.findViewById(R.id.roadworks_count);
     showOnMap = root.findViewById(R.id.roadwork_show_on_map);
+    swipeRefreshLayout = root.findViewById(R.id.roadworks_refresh);
 
     this.roadworks = new ArrayList<>();
     this.plannedRoadworks = new ArrayList<>();
@@ -104,6 +108,11 @@ public class RoadworksListFragment extends Fragment {
       RoadworksListMapDialogFragment roadworksListMapDialogFragment = new RoadworksListMapDialogFragment(filteredRoadworks);
       roadworksListMapDialogFragment.setTargetFragment(RoadworksListFragment.this, MAP_DIALOG_FRAGMENT);
       roadworksListMapDialogFragment.show(getFragmentManager().beginTransaction(), "map");
+    });
+
+    swipeRefreshLayout.setOnRefreshListener(() -> {
+      Handler handler = new Handler();
+      handler.postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 2000);
     });
 
     setHasOptionsMenu(true);
