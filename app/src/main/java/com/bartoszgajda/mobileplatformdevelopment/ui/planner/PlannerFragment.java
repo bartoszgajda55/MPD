@@ -1,8 +1,10 @@
 package com.bartoszgajda.mobileplatformdevelopment.ui.planner;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,18 +61,24 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
   private GeoApiContext geoApiContext;
   private List<? extends RoadworkModel> roadworks;
   private HashMap<LatLng, RoadworkModel> pointRoadworkHashMap = new HashMap<>();
+  private ProgressDialog progressDialog;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     this.geoApiContext = new GeoApiContext.Builder().apiKey(getResources().getString(R.string.google_maps_key)).build();
     plannerViewModel = ViewModelProviders.of(this).get(PlannerViewModel.class);
     View root = inflater.inflate(R.layout.fragment_planner, container, false);
 
-    this.origin = (EditText) root.findViewById(R.id.planner_origin);
-    this.destination = (EditText) root.findViewById(R.id.planner_destination);
-    this.planButton = (Button) root.findViewById(R.id.planner_plan);
-    this.mapView = (MapView) root.findViewById(R.id.planner_map);
+    origin = (EditText) root.findViewById(R.id.planner_origin);
+    destination = (EditText) root.findViewById(R.id.planner_destination);
+    planButton = (Button) root.findViewById(R.id.planner_plan);
+    mapView = (MapView) root.findViewById(R.id.planner_map);
 
-    this.roadworks = new ArrayList<>();
+    roadworks = new ArrayList<>();
+
+    progressDialog = new ProgressDialog(getContext());
+    progressDialog.setTitle("Loading");
+    progressDialog.setMessage("Finding roadworks on the route");
+    progressDialog.setCancelable(false);
 
     plannerViewModel.getRoadworks().observe(this, roadworks -> {
       PlannerFragment.this.roadworks = roadworks;
@@ -90,8 +98,11 @@ public class PlannerFragment extends Fragment implements OnMapReadyCallback, Vie
 
   @Override
   public void onClick(View view) {
+    progressDialog.show();
     clearMap(this.googleMap);
     drawRouteBetweenTwoLocationAddresses(this.origin.getText().toString(), this.destination.getText().toString());
+    Handler handler = new Handler();
+    handler.postDelayed(() -> progressDialog.dismiss(), 2000);
   }
 
   private void clearMap(GoogleMap googleMap) {
