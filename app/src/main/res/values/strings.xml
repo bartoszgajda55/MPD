@@ -21,6 +21,8 @@
     <string name="roadworks_menu_filter">Filter feed</string>
     <string name="roadworks_menu_filter_title">Choose feed data</string>
     <string name="roadworks_menu_date">Specify date</string>
+    <string name="roadworks_feed_changed">Feed updated</string>
+    <string name="roadworks_date_changed">Date updated</string>
 
     <string name="roadworks_type_current">Current Roadwork</string>
     <string name="roadworks_type_planned">Planned Roadwork</string>

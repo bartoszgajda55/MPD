@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import com.bartoszgajda.mobileplatformdevelopment.R;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.PlannedRoadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.Roadwork;
 import com.bartoszgajda.mobileplatformdevelopment.util.model.RoadworkModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +53,7 @@ public class RoadworksListFragment extends Fragment {
   private List<Roadwork> roadworks;
   private List<PlannedRoadwork> plannedRoadworks;
   private SwipeRefreshLayout swipeRefreshLayout;
+  private CoordinatorLayout coordinatorLayout;
 
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     roadworksListViewModel = ViewModelProviders.of(this).get(RoadworksListViewModel.class);
@@ -61,6 +64,7 @@ public class RoadworksListFragment extends Fragment {
     roadworksCount = root.findViewById(R.id.roadworks_count);
     showOnMap = root.findViewById(R.id.roadwork_show_on_map);
     swipeRefreshLayout = root.findViewById(R.id.roadworks_refresh);
+    coordinatorLayout = root.findViewById(R.id.roadworks_coordinator);
 
     this.roadworks = new ArrayList<>();
     this.plannedRoadworks = new ArrayList<>();
@@ -179,6 +183,7 @@ public class RoadworksListFragment extends Fragment {
     }
     roadworksListAdapter.notifyDataSetChanged();
     roadworksCount.setText("Roadworks count: " + this.roadworksListAdapter.getCount());
+    Snackbar.make(coordinatorLayout, R.string.roadworks_date_changed, Snackbar.LENGTH_SHORT).show();
   }
 
   private void updateListAdapterWithFeedFilter(String feedFilterOption) {
@@ -197,5 +202,6 @@ public class RoadworksListFragment extends Fragment {
     }
     this.roadworksListAdapter.notifyDataSetChanged();
     roadworksCount.setText("Roadworks count: " + this.roadworksListAdapter.getCount());
+    Snackbar.make(coordinatorLayout, R.string.roadworks_feed_changed, Snackbar.LENGTH_SHORT).show();
   }
 }
