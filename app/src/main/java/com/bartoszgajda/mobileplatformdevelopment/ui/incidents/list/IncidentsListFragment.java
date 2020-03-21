@@ -48,7 +48,9 @@ public class IncidentsListFragment extends Fragment {
     searchInput.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        IncidentsListFragment.this.incidentsListAdapter.getFilter().filter(charSequence);
+        if (incidentsListAdapter != null) {
+          IncidentsListFragment.this.incidentsListAdapter.getFilter().filter(charSequence);
+        }
       }
 
       @Override
